@@ -1,25 +1,137 @@
-/**
-  |============================
-  | include css partials with
-  | default @import url()
-  |============================
-*/
-@import url('./reset.css');
-@import url('./vite-promo.css');
-@import url('./header.css');
-
-:root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
-
-  color: #242424;
-  background-color: rgba(255, 255, 255, 0.87);
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+/* Загальні стилі для шрифту */
+body {
+  font-family: 'Montserrat', sans-serif; /* Встановлюємо шрифт Montserrat для всього документу */
 }
+
+/* Форма пошуку */
+form {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+input[type="text"] {
+  width: 272px; /* Зміна ширини поля вводу */
+  height: 40px;
+  border: 1px solid #808080; /* Колір обводки в звичайному стані */
+  border-radius: 5px;
+  outline: none;
+  font-size: 16px; /* Розмір шрифту */
+  color: black; /* Чорний колір тексту */
+  padding-left: 16px;
+}
+
+input[type="text"]::placeholder {
+  color: #808080; /* Колір плейсхолдера */
+}
+
+input[type="text"]:hover {
+  border-color: #000000; /* Колір обводки при ховері */
+}
+
+input[type="text"]:focus {
+  border-color: #4E75FF; /* Колір обводки при фокусі */
+}
+
+button[type="submit"] {
+  width: 91px; /* Зміна ширини кнопки */
+  height: 40px;
+  padding: 10px 0; /* Зміна відступів кнопки */
+  margin-left: 8px;
+  background-color: #4E75FF; /* Колір кнопки в звичайному стані */
+  color: white;
+  border: none;
+  border-radius: 8px; /* Закруглення */
+  cursor: pointer;
+  font-size: 16px; /* Розмір шрифту */
+  font-weight: 500; /* Товщина шрифту Medium */
+}
+
+button[type="submit"]:hover {
+  background-color: #6C8CFF; /* Колір кнопки при ховері */
+}
+
+
+
+#gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 360px); /* 3 колонки шириною 360px */
+  gap: 20px; /* Відступ між картками */
+  padding: 20px;
+  margin: 0 auto; /* Відцентрування */
+  max-width: 1128px; /* Максимальна ширина галереї */
+}
+
+
+.card {
+  width: 360px; /* Ширина карточки */
+  height: 200px; /* Висота карточки */
+  border: 1px solid #808080; /* Зміна коліру рамки картки */
+  overflow: hidden;
+  position: relative; /* Додано для позиціонування інформації */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Додаємо тінь */
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Зберігає пропорції та обрізає зайвий контент */
+}
+
+.info {
+  position: absolute; /* Абсолютне позиціонування */
+  bottom: 0; /* Розміщення внизу */
+  left: 0; /* Розміщення зліва */
+  width: 100%; /* Ширина на всю ширину карточки */
+  height: 48px; /* Висота блоку інформації */
+  background-color: rgba(255, 255, 255, 0.9); /* Прозорий фоновий колір */
+  padding: 10px; /* Внутрішній відступ */
+  box-sizing: border-box; /* Щоб padding не враховувався у внутрішній ширині */
+  display: flex; /* Використовуємо Flexbox для вирівнювання елементів */
+  justify-content: space-between; /* Вирівнюємо елементи по краях контейнера */
+  align-items: center; /* Вирівнюємо елементи по вертикалі */
+}
+
+.info p {
+  margin: 0; /* Зняти зовнішній відступ */
+  font-size: 12px; /* Розмір шрифта 12px */
+  text-align: center; /* Відцентрування тексту по горизонталі */
+}
+
+
+
+
+/* Повідомлення про помилку */
+.iziToast-message.iziToast-error {
+  background-color: #f44336;
+  color: white;
+}
+
+.iziToast-message.iziToast-error .iziToast-close {
+  color: white;
+}
+
+
+
+
+
+      /* CSS-анимований спінер */
+      .loader {
+        border: 8px solid #f3f3f3;
+        border-top: 8px solid #3498db;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 2s linear infinite;
+        margin: auto;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      /* Показати або сховати спінер */
+      .hidden {
+        display: none;
+      }
