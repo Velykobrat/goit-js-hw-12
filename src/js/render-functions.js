@@ -8,18 +8,12 @@ import SimpleLightbox from "simplelightbox";
 // Додатковий імпорт стилів
 import "simplelightbox/dist/simple-lightbox.min.css";
 
-// Функція для створення розмітки галереї
+// Функція для додавання нових зображень під попередніми
 export function renderImages(images) {
-    const gallery = document.getElementById('gallery');
-    gallery.innerHTML = '';
-  
-    if (images.length === 0) {
-      showErrorMessage();
-      return;
-    }
-  
-    images.forEach(image => {
-        const cardHTML = `
+  const gallery = document.getElementById('gallery');
+
+  images.forEach(image => {
+    const cardHTML = `
       <div class="card">
         <a href="${image.largeImageURL}" data-lightbox="image">
           <img src="${image.webformatURL}" alt="${image.tags}">
@@ -33,19 +27,11 @@ export function renderImages(images) {
       </div>
     `;
 
-    // Додаємо картку зображення до контейнера галереї
+    // Додаємо нову картку зображення під попередніми
     gallery.insertAdjacentHTML('beforeend', cardHTML);
   });
-       
-    // Після додавання нових елементів до галереї, викликаємо метод refresh
-    const lightbox = new SimpleLightbox('#gallery a', {});
-    lightbox.refresh();
-  }
 
-// Допоміжна функція для відображення повідомлення про помилку
-function showErrorMessage() {
-  iziToast.error({
-    title: 'Error',
-    message: 'Sorry, there are no images matching your search query. Please try again!',
-  });
+  // Після додавання нових елементів до галереї, викликаємо метод refresh
+  const lightbox = new SimpleLightbox('#gallery a', {});
+  lightbox.refresh();
 }

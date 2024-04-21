@@ -99,8 +99,6 @@ button[type="submit"]:hover {
 }
 
 
-
-
 /* Повідомлення про помилку */
 .iziToast-message.iziToast-error {
   background-color: #f44336;
@@ -111,8 +109,17 @@ button[type="submit"]:hover {
   color: white;
 }
 
+/* Центрування кнопки завантаження нових зображень відносно вертикалі по центру екрана */
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-
+/* Стилі для кнопки завантаження */
+#load-more-btn {
+  /* Залиште ваші поточні стилі для кнопки тут */
+}
 
 
       /* CSS-анимований спінер */
