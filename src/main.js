@@ -28,8 +28,9 @@ searchForm.addEventListener('submit', async (event) => {
 
   try {
     const images = await fetchImages(searchQuery);
-    renderImages(images);
-
+    const totalHits = images.totalHits; // Отримання загальної кількості зображень
+    renderImages(images, totalHits);
+  
     // Показуємо кнопку "Load more" після завантаження зображень
     loadMoreBtn.style.display = 'block';
   } catch (error) {
@@ -52,3 +53,5 @@ loadMoreBtn.addEventListener('click', async () => {
     loader.classList.add('hidden');
   }
 });
+
+

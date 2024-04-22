@@ -9,7 +9,7 @@ import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
 // Функція для додавання нових зображень під попередніми
-export function renderImages(images) {
+export function renderImages(images, totalHits) {
   const gallery = document.getElementById('gallery');
 
   images.forEach(image => {
@@ -34,4 +34,22 @@ export function renderImages(images) {
   // Після додавання нових елементів до галереї, викликаємо метод refresh
   const lightbox = new SimpleLightbox('#gallery a', {});
   lightbox.refresh();
+
+  // Перевірка, чи дійшли до кінця результатів пошуку
+  if (gallery.children.length >= totalHits) {
+    hideLoadMoreButton();
+    showEndMessage();
+  }
+}
+
+  // Функція для приховання кнопки "Load more"
+  function hideLoadMoreButton() {
+  const loadMoreBtn = document.getElementById('load-more-btn');
+  loadMoreBtn.style.display = 'none';
+}
+
+  // Функція для відображення повідомлення про кінець результатів пошуку
+  function showEndMessage() {
+  const endMessage = document.getElementById('end-message');
+  endMessage.style.display = 'block';
 }
