@@ -40,6 +40,28 @@ searchForm.addEventListener('submit', async (event) => {
   }
 });
 
+  // Функція для визначення висоти однієї карточки галереї
+function getCardHeight() {
+  const card = document.querySelector('.card');
+  if (card) {
+    const cardRect = card.getBoundingClientRect();
+    return cardRect.height;
+  }
+  return 0; // Повертаємо 0 у випадку, якщо карточка не знайдена
+}
+
+// Функція для плавного прокручування сторінки
+function smoothScrollByCardHeight() {
+  const cardHeight = getCardHeight();
+  if (cardHeight !== 0) {
+    window.scrollBy({
+      top: cardHeight * 2, // Прокручуємо сторінку на дві висоти карточки
+      behavior: 'smooth' // Встановлюємо плавність прокрутки
+    });
+  }
+}
+
+// При натисканні на кнопку "Load more" виконуємо плавну прокрутку сторінки
 loadMoreBtn.addEventListener('click', async () => {
   loader.classList.remove('hidden');
 
@@ -47,11 +69,12 @@ loadMoreBtn.addEventListener('click', async () => {
     const images = await fetchImages(currentSearchQuery, currentPage + 1);
     renderImages(images);
     currentPage++; // Оновлюємо значення поточної сторінки після завантаження наступної
+
+    // Викликаємо функцію для плавного прокручування сторінки
+    smoothScrollByCardHeight();
   } catch (error) {
     console.error('Error loading more images:', error);
   } finally {
     loader.classList.add('hidden');
   }
 });
-
-
