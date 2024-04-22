@@ -27,6 +27,10 @@ searchForm.addEventListener('submit', async (event) => {
 
   loader.classList.remove('hidden');
 
+    // Очищення попередніх зображень перед початком нового запиту
+    const gallery = document.getElementById('gallery');
+    gallery.innerHTML = '';
+
   try {
     const images = await fetchImages(searchQuery);
     const totalHits = images.totalHits; // Отримання загальної кількості зображень
