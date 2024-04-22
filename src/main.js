@@ -1,9 +1,10 @@
 import { fetchImages } from './js/pixabay-api.js';
-import { renderImages } from './js/render-functions.js';
+import { renderImages } from './js/render-functions.js'; // Ось тут ми імпортуємо функцію renderImages, а також hideLoadMoreButton та showEndMessage
 
 const searchForm = document.getElementById('search-form');
 const loader = document.getElementById('loader'); // Отримання елемента спінера
 const loadMoreBtn = document.getElementById('load-more-btn');
+const endMessage = document.getElementById('end-message'); // Отримання елемента повідомлення про кінець результатів пошуку
 let currentSearchQuery = ''; // Зберігаємо поточний пошуковий запит
 let currentPage = 1; // Ініціалізуємо currentPage
 
@@ -40,7 +41,7 @@ searchForm.addEventListener('submit', async (event) => {
   }
 });
 
-  // Функція для визначення висоти однієї карточки галереї
+// Функція для визначення висоти однієї карточки галереї
 function getCardHeight() {
   const card = document.querySelector('.card');
   if (card) {
@@ -70,6 +71,12 @@ loadMoreBtn.addEventListener('click', async () => {
     renderImages(images);
     currentPage++; // Оновлюємо значення поточної сторінки після завантаження наступної
 
+     // Перевіряємо, чи дійшли до кінця результатів пошуку
+     if (images.length === 0) {
+      hideLoadMoreButton();
+      showEndMessage();
+    }
+    
     // Викликаємо функцію для плавного прокручування сторінки
     smoothScrollByCardHeight();
   } catch (error) {
@@ -78,3 +85,13 @@ loadMoreBtn.addEventListener('click', async () => {
     loader.classList.add('hidden');
   }
 });
+
+// Функція для приховання кнопки "Load more"
+function hideLoadMoreButton() {
+  loadMoreBtn.style.display = 'none';
+}
+
+// Функція для відображення повідомлення про кінець результатів пошуку
+function showEndMessage() {
+  endMessage.style.display = 'block';
+}
