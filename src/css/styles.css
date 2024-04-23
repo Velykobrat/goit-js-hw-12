@@ -118,8 +118,27 @@ button[type="submit"]:hover {
 
 /* Стилі для кнопки завантаження */
 #load-more-btn {
-  /* Залиште ваші поточні стилі для кнопки тут */
+  width: 150px; /* Ширина кнопки */
+  height: 40px;
+  margin-top: 20px; /* Відступ зверху */
+  background-color: #4E75FF;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.3s ease; /* Плавний перехід для зміни кольору */
 }
+
+#load-more-btn:hover {
+  background-color: #6C8CFF; /* Колір при наведенні */
+}
+
+#end-message {
+  margin-top: 20px; /* Відступ зверху */
+}
+
 
 
       /* CSS-анимований спінер */

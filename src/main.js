@@ -1,12 +1,12 @@
 import { fetchImages } from './js/pixabay-api.js';
-import { renderImages } from './js/render-functions.js'; // Ось тут ми імпортуємо функцію renderImages, а також hideLoadMoreButton та showEndMessage
+import { renderImages, hideLoadMoreButton, showEndMessage } from './js/render-functions.js';
 
 const searchForm = document.getElementById('search-form');
-const loader = document.getElementById('loader'); // Отримання елемента спінера
+const loader = document.getElementById('loader');
 const loadMoreBtn = document.getElementById('load-more-btn');
-const endMessage = document.getElementById('end-message'); // Отримання елемента повідомлення про кінець результатів пошуку
-let currentSearchQuery = ''; // Зберігаємо поточний пошуковий запит
-let currentPage = 1; // Ініціалізуємо currentPage
+const endMessage = document.getElementById('end-message');
+let currentSearchQuery = '';
+let currentPage = 1;
 
 searchForm.addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -22,22 +22,25 @@ searchForm.addEventListener('submit', async (event) => {
     return;
   }
 
-  currentSearchQuery = searchQuery; // Оновлюємо поточний пошуковий запит
-  currentPage = 1; // Повертаємо поточну сторінку до початкового значення
+  currentSearchQuery = searchQuery;
+  currentPage = 1;
 
   loader.classList.remove('hidden');
-
-    // Очищення попередніх зображень перед початком нового запиту
-    const gallery = document.getElementById('gallery');
-    gallery.innerHTML = '';
+  const gallery = document.getElementById('gallery');
+  gallery.innerHTML = '';
 
   try {
     const images = await fetchImages(searchQuery);
-    const totalHits = images.totalHits; // Отримання загальної кількості зображень
+    const totalHits = images.totalHits;
     renderImages(images, totalHits);
-  
+
     // Показуємо кнопку "Load more" після завантаження зображень
-    loadMoreBtn.style.display = 'block';
+    loadMoreBtn.style.display = 'block';  
+    if (totalHits <= 14) {
+      hideLoadMoreButton();
+      showEndMessage();
+    }
+
   } catch (error) {
     console.error('Error searching for images:', error);
   } finally {
@@ -45,28 +48,20 @@ searchForm.addEventListener('submit', async (event) => {
   }
 });
 
-// Функція для визначення висоти однієї карточки галереї
-function getCardHeight() {
-  const card = document.querySelector('.card');
-  if (card) {
-    const cardRect = card.getBoundingClientRect();
-    return cardRect.height;
-  }
-  return 0; // Повертаємо 0 у випадку, якщо карточка не знайдена
-}
-
-// Функція для плавного прокручування сторінки
+// Функція для плавного прокручування сторінки до нижнього краю останнього завантаженого зображення
 function smoothScrollByCardHeight() {
-  const cardHeight = getCardHeight();
-  if (cardHeight !== 0) {
-    window.scrollBy({
-      top: cardHeight * 2, // Прокручуємо сторінку на дві висоти карточки
-      behavior: 'smooth' // Встановлюємо плавність прокрутки
-    });
-  }
+  const gallery = document.getElementById('gallery');
+  const lastImage = gallery.lastElementChild;
+  const lastImageHeight = lastImage.offsetHeight;
+  const lastImageOffset = lastImage.offsetTop;
+
+  window.scrollTo({
+    top: lastImageOffset + lastImageHeight,
+    behavior: 'smooth'
+  });
 }
 
-// При натисканні на кнопку "Load more" виконуємо плавну прокрутку сторінки
+// При натисканні на кнопку "Load more" виконуємо плавне прокручування сторінки
 loadMoreBtn.addEventListener('click', async () => {
   loader.classList.remove('hidden');
 
@@ -75,27 +70,27 @@ loadMoreBtn.addEventListener('click', async () => {
     renderImages(images);
     currentPage++; // Оновлюємо значення поточної сторінки після завантаження наступної
 
-     // Перевіряємо, чи дійшли до кінця результатів пошуку
-     if (images.length === 0) {
-      hideLoadMoreButton();
-      showEndMessage();
-    }
-    
-    // Викликаємо функцію для плавного прокручування сторінки
-    smoothScrollByCardHeight();
-  } catch (error) {
-    console.error('Error loading more images:', error);
-  } finally {
-    loader.classList.add('hidden');
+    // Отримуємо висоту однієї карточки галереї
+    const cardHeight = document.querySelector('.card').getBoundingClientRect().height;
+
+    // Прокручуємо сторінку на дві висоти карточки галереї з плавним ефектом
+    window.scrollBy({
+      top: cardHeight * 2,
+      behavior: 'smooth'
+    });
+
+  // Показуємо кнопку "Load more" після завантаження зображень
+  loadMoreBtn.style.display = 'block';  
+
+  // Перевіряємо, чи дійшли до кінця результатів пошуку
+  if (images.length < 14) { // Перевіряємо кількість нових зображень
+    hideLoadMoreButton();
+    showEndMessage();
   }
+} catch (error) {
+  console.error('Error searching for images:', error);
+} finally {
+  loader.classList.add('hidden');
+}
 });
 
-// Функція для приховання кнопки "Load more"
-function hideLoadMoreButton() {
-  loadMoreBtn.style.display = 'none';
-}
-
-// Функція для відображення повідомлення про кінець результатів пошуку
-function showEndMessage() {
-  endMessage.style.display = 'block';
-}

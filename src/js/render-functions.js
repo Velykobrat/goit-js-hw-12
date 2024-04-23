@@ -35,8 +35,7 @@ export function renderImages(images, totalHits) {
   const lightbox = new SimpleLightbox('#gallery a', {});
   lightbox.refresh();
 
-  
-  // Перевірка, чи дійшли до кінця результатів пошуку
+  // Перевіряємо, чи дійшли до кінця результатів пошуку
   if (gallery.children.length >= totalHits) {
     hideLoadMoreButton();
     showEndMessage();
@@ -44,13 +43,13 @@ export function renderImages(images, totalHits) {
 }
 
 // Функція для приховання кнопки "Load more"
-function hideLoadMoreButton() {
+export function hideLoadMoreButton() {
   const loadMoreBtn = document.getElementById('load-more-btn');
   loadMoreBtn.style.display = 'none';
 }
-  
+
 // Функція для відображення повідомлення про кінець результатів пошуку
-function showEndMessage() {
+export function showEndMessage() {
   const endMessage = document.getElementById('end-message');
   endMessage.style.display = 'block';
 }
