@@ -8,6 +8,9 @@ import SimpleLightbox from "simplelightbox";
 // Додатковий імпорт стилів
 import "simplelightbox/dist/simple-lightbox.min.css";
 
+// Ініціалізація SimpleLightbox
+const lightbox = new SimpleLightbox('#gallery a', {});
+
 // Функція для додавання нових зображень під попередніми
 export function renderImages(images, totalHits) {
   const gallery = document.getElementById('gallery');
@@ -31,14 +34,13 @@ export function renderImages(images, totalHits) {
     gallery.insertAdjacentHTML('beforeend', cardHTML);
   });
 
-  // Після додавання нових елементів до галереї, викликаємо метод refresh
-  const lightbox = new SimpleLightbox('#gallery a', {});
-  lightbox.refresh();
-
-  // Перевіряємо, чи дійшли до кінця результатів пошуку
+  // Перевірка, чи дійшли до кінця результатів пошуку
   if (gallery.children.length >= totalHits) {
     hideLoadMoreButton();
     showEndMessage();
+  } else {
+    // Викликаємо метод refresh для оновлення SimpleLightbox
+    lightbox.refresh();
   }
 }
 
