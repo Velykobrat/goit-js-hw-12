@@ -8,6 +8,14 @@ const endMessage = document.getElementById('end-message');
 let currentSearchQuery = '';
 let currentPage = 1;
 
+// Функція для приховування повідомлення про кінець результатів
+export function hideEndMessage() {
+  const endMessage = document.getElementById('end-message');
+  endMessage.style.display = 'none';
+}
+
+
+// Використовуємо searchForm у слухачі подій
 searchForm.addEventListener('submit', async (event) => {
   event.preventDefault();
 
@@ -29,37 +37,36 @@ searchForm.addEventListener('submit', async (event) => {
   const gallery = document.getElementById('gallery');
   gallery.innerHTML = '';
 
+  // Викликаємо функцію для приховування повідомлення про кінець результатів перед новим запитом
+hideEndMessage();
+
   try {
     const images = await fetchImages(searchQuery);
     const totalHits = images.totalHits;
     renderImages(images, totalHits);
-
-    // Показуємо кнопку "Load more" після завантаження зображень
-    loadMoreBtn.style.display = 'block';  
-    if (totalHits <= 14) {
-      hideLoadMoreButton();
+  
+    // Перевіряємо, чи отримано зображення після сабміту
+    if (images.length === 0) {
+      hideLoadMoreButton(); // Приховуємо кнопку, якщо не отримано жодного зображення
       showEndMessage();
-    }
+    } else {
+      // Перевіряємо, чи вже відображено всі доступні зображення
+// Перевірка кількості отриманих зображень і відображення кнопки "Load more" або повідомлення про кінець результатів
+if (images.length < 15) {
+  hideLoadMoreButton(); // Приховуємо кнопку, якщо кількість отриманих зображень менша за 15
+  showEndMessage(); // Відображаємо повідомлення про кінець результатів
+} else {
+  loadMoreBtn.style.display = 'block'; // Відображаємо кнопку "Load more", якщо кількість отриманих зображень більша або дорівнює 15
+}
 
+    }
   } catch (error) {
     console.error('Error searching for images:', error);
+    hideLoadMoreButton(); // Приховуємо кнопку у випадку невалідного запиту
   } finally {
     loader.classList.add('hidden');
   }
 });
-
-// Функція для плавного прокручування сторінки до нижнього краю останнього завантаженого зображення
-function smoothScrollByCardHeight() {
-  const gallery = document.getElementById('gallery');
-  const lastImage = gallery.lastElementChild;
-  const lastImageHeight = lastImage.offsetHeight;
-  const lastImageOffset = lastImage.offsetTop;
-
-  window.scrollTo({
-    top: lastImageOffset + lastImageHeight,
-    behavior: 'smooth'
-  });
-}
 
 // При натисканні на кнопку "Load more" виконуємо плавне прокручування сторінки
 loadMoreBtn.addEventListener('click', async () => {
@@ -79,18 +86,19 @@ loadMoreBtn.addEventListener('click', async () => {
       behavior: 'smooth'
     });
 
-  // Показуємо кнопку "Load more" після завантаження зображень
-  loadMoreBtn.style.display = 'block';  
-
-  // Перевіряємо, чи дійшли до кінця результатів пошуку
-  if (images.length < 14) { // Перевіряємо кількість нових зображень
-    hideLoadMoreButton();
-    showEndMessage();
-  }
-} catch (error) {
-  console.error('Error searching for images:', error);
-} finally {
-  loader.classList.add('hidden');
+// Перевірка кількості отриманих зображень і відображення кнопки "Load more" або повідомлення про кінець результатів
+if (images.length < 15) {
+  hideLoadMoreButton(); // Приховуємо кнопку, якщо кількість отриманих зображень менша за 15
+  showEndMessage(); // Відображаємо повідомлення про кінець результатів
+} else {
+  loadMoreBtn.style.display = 'block'; // Відображаємо кнопку "Load more", якщо кількість отриманих зображень більша або дорівнює 15
 }
+
+  } catch (error) {
+    console.error('Error searching for images:', error);
+  } finally {
+    loader.classList.add('hidden');
+  }
 });
+
 

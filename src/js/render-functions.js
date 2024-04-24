@@ -1,11 +1,6 @@
-// Описаний у документації
 import iziToast from "izitoast";
-// Додатковий імпорт стилів
 import "izitoast/dist/css/iziToast.min.css";
-
-// Описаний у документації
 import SimpleLightbox from "simplelightbox";
-// Додатковий імпорт стилів
 import "simplelightbox/dist/simple-lightbox.min.css";
 
 // Ініціалізація SimpleLightbox
@@ -42,6 +37,19 @@ export function renderImages(images, totalHits) {
     // Викликаємо метод refresh для оновлення SimpleLightbox
     lightbox.refresh();
   }
+}
+
+// Функція для плавного прокручування сторінки до нижнього краю останнього завантаженого зображення
+export function smoothScrollByCardHeight() {
+  const gallery = document.getElementById('gallery');
+  const lastImage = gallery.lastElementChild;
+  const lastImageHeight = lastImage.offsetHeight;
+  const lastImageOffset = lastImage.offsetTop;
+
+  window.scrollTo({
+    top: lastImageOffset + lastImageHeight,
+    behavior: 'smooth'
+  });
 }
 
 // Функція для приховання кнопки "Load more"
